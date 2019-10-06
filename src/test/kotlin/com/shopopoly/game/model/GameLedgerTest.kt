@@ -25,4 +25,16 @@ internal class GameLedgerTest {
 
         assertThat(gameLedger.calculateBalance(player2)).isEqualTo(55)
     }
+
+    @Test
+    fun `player should pay rent to another player`() {
+        val gameLedger = GameLedger()
+        gameLedger.payStartingBalance(player1, 100)
+        gameLedger.payStartingBalance(player2, 100)
+
+        gameLedger.payRent(from = player1, to = player2, amount = 50)
+
+        assertThat(gameLedger.calculateBalance(player2)).isEqualTo(150)
+        assertThat(gameLedger.calculateBalance(player1)).isEqualTo(50)
+    }
 }
