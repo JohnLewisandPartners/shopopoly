@@ -22,6 +22,20 @@ class GameLedger {
     fun payRent(from: Player, to: Player, amount: Int) {
         transactions.add(Transaction(from, to, amount))
     }
+
+    fun purchase(location: Factory, player: Player) {
+        transactions.add(
+                Transaction(
+                        debitFrom = player,
+                        creditTo = null,
+                        amount = location.purchasePrice
+                )
+        )
+    }
+
+    fun whoOwns(location: Factory): Player? {
+        return null
+    }
 }
 
-data class Transaction(val debitFrom: Player?, val creditTo: Player, val amount: Int)
+data class Transaction(val debitFrom: Player?, val creditTo: Player?, val amount: Int)

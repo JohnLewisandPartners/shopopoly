@@ -37,4 +37,17 @@ internal class GameLedgerTest {
         assertThat(gameLedger.calculateBalance(player2)).isEqualTo(150)
         assertThat(gameLedger.calculateBalance(player1)).isEqualTo(50)
     }
+
+    @Test
+    fun `player should purchase location`() {
+        val gameLedger = GameLedger()
+        gameLedger.payStartingBalance(player1, 200)
+
+        val factory1 = Factory("MRP-8")
+
+        gameLedger.purchase(factory1, player1)
+
+        assertThat(gameLedger.calculateBalance(player1)).isEqualTo(100)
+        assertThat(gameLedger.whoOwns(factory1)).isEqualTo(player1)
+    }
 }
