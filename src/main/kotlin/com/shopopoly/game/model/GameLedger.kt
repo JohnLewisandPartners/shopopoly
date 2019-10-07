@@ -4,7 +4,14 @@ class GameLedger {
     private val transactions: MutableList<Transaction> = mutableListOf()
 
     fun payStartingBalance(player: Player, startingBalance: Int) {
-        transactions.add(Transaction(null, player, startingBalance))
+        transactions.add(
+                Transaction(
+                        debitFrom = null,
+                        creditTo = player,
+                        amount = startingBalance,
+                        purchasedLocation = null
+                )
+        )
     }
 
     fun calculateBalance(player: Player): Int {
@@ -20,7 +27,14 @@ class GameLedger {
     }
 
     fun payRent(from: Player, to: Player, amount: Int) {
-        transactions.add(Transaction(from, to, amount))
+        transactions.add(
+                Transaction(
+                        debitFrom = from,
+                        creditTo = to,
+                        amount = amount,
+                        purchasedLocation = null
+                )
+        )
     }
 
     fun purchase(location: Factory, player: Player) {
@@ -28,14 +42,22 @@ class GameLedger {
                 Transaction(
                         debitFrom = player,
                         creditTo = null,
-                        amount = location.purchasePrice
+                        amount = location.purchasePrice,
+                        purchasedLocation = location
                 )
         )
     }
 
     fun whoOwns(location: Factory): Player? {
-        return null
+        return transactions
+                .singleOrNull { it.purchasedLocation == location }
+                ?.debitFrom
     }
 }
 
-data class Transaction(val debitFrom: Player?, val creditTo: Player?, val amount: Int)
+data class Transaction(
+        val debitFrom: Player?,
+        val creditTo: Player?,
+        val amount: Int,
+        val purchasedLocation: Factory?
+)
